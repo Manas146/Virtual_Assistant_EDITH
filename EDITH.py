@@ -1,5 +1,6 @@
 import pyttsx3
 import datetime
+import time
 import speech_recognition as sr
 import win32api, sys, os
 import wikipedia 
@@ -15,26 +16,28 @@ def speak(audio):
     engine.runAndWait()
 
 def paswd():
-    speak("Before We start Please tell me Your Identity")
+    speak("Say Edith")
     query = take_commands().lower().strip()
-    if(query == "i am abhishek" or query=="i am meliodas"):
-        speak("Verification SucessFull!")
+    if(query == "edit" or query=="i am meliodas"):
+        speak("Standby ..; Starting Biometric Scan; ")
+        speak("Your Name")
+        query = take_commands().lower().strip()
+        speak("hello"+query)
+        time.sleep(1)
         c=1   
-    else:
-        speak("You are not allowed to test me") 
-        c=0  
     return c     
        
 
 def wishme():
     t = int(datetime.datetime.now().hour)
     if(t>=0 and t<=12):
-        speak("Good Morning Sir.")
+        speak("Good Morning.")
     elif(t>12 and t<=18):
-        speak("Good Afternoon Sir. ")
+        speak("Good Afternoon. ")
     else:
-        speak("Good Evening Sir.")
-    speak("I am EDITH. How may i help you")    
+        speak("Good Evening .")
+    speak("I am Edith. ")
+    time.sleep(2)    
 
 def take_commands():
     r = sr.Recognizer()
@@ -44,7 +47,7 @@ def take_commands():
         
     try :
         print("Recognizing......")
-        query = r.recognize_google(audio , language = 'Hindi')
+        query = r.recognize_google(audio , language = 'en-in')
         print("User Said:~  " + query)
     
     except Exception as e :
@@ -54,30 +57,55 @@ def take_commands():
     return query    
 
 wishme()
+speak("Fetching Files.... from Satellite 53;")
+speak("Intializing Databases........;")
+time.sleep(1)
+speak(" Intializations SucessFull")
+time.sleep(1)
 c = paswd()
 
+
+speak("Would u like to see what i can do; ")
 while c :
-    speak("Give Me Some Commands")
     query = take_commands().lower()
-    if 'wikipedia' in query:
+    if 'yes' in query:
+        speak("Than Say Open Youtube")
+    elif (query == 'no'):
+        speak("Ok! ; I am Quitiing")
+        c=0
+    elif 'wikipedia' in query:
         speak("Searching WEB.......")
         query = query.replace('wikipedia','')
         re = wikipedia.summary(query)
         print(re)
         speak(re)
-    elif 'quit' in query:
-        speak(" Quitting Sir...! Thanks for your time :)")
+    elif 'stop talking' in query:
+        speak(" Quitting Sir...! Thanks for your time ")
         c=0    
     elif 'open youtube' in query:
         speak("here we go..")
         webbrowser.open("youtube.com")  
     elif 'about you' in query:
-        speak(" i am managed by an awesome person , and I am trying to get smarter day by day . you can find my source code at github")
+        speak("I am EDITH  and EDITH stands for Even Dead, I'm The Hero, I am developed By an Iron man Fan . U can Always Find My source code at github at abhi032 to make me smarter ")
     elif 'play music' in query:
-        speak(" i didn't got this knowledge So far") 
-    elif 'black cat' in query:
-        speak("Meliodas is best friend of My Creator and i am allowed to verified by him also")      
+        speak("Do u want to provide playlist path ?")
+        query = take_commands().lower().strip()
+        if "yes" in query:
+            speak(" i am waiting for Path")
+            x=input("Path")
+            songs = os.listdir(x)
+            print(songs)    
+            os.startfile(os.path.join(x, songs[0]))
+        else :
+            speak("Sure...!! Playing......") 
+            os.startfile("c:\\Users\\Abhishek\\Desktop\\Virtual_Assistant\\tmk.mp3") 
+
     elif 'google it' in query:
-        speak("Sure!!!")
-        query = query.replace("search google","")
-        re = webbrowser.open("google.com/"+query)
+        speak("Sure!!!. opening web...")
+        query = query.replace("google it","").strip()
+        query = query.replace(" ","+")
+        re = webbrowser.open("google.com/search?q="+query)
+    else :
+        speak("I am Not Allowed to do this ;")
+        speak("Would You Like to Addd more features SO PLEASE ADD some commands")
+        c=0    
